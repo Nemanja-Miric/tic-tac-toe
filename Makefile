@@ -1,14 +1,35 @@
-options = -std=c23 --pedantic -Wall -Wextra -Werror -O3
+SHELL = /bin/sh
+CFLAGS = -std=c23 -Wall -Wextra -O3
 
-tic-tac-toe : main.o tic-tac-toe.o
-	gcc $(options) -o tic-tac-toe main.o tic-tac-toe.o
+.SUFFIXES = .c .h .o
+.PHONY = all build test cleanall cleanbin cleanobj
 
-main.o : main.c tic-tac-toe.o tic-tac-toe.h
-	gcc $(options) -c -o main.o main.c
+all : bin/tic-tac-toe bin/test_tic-tac-toe
 
-tic-tac-toe.o : tic-tac-toe.c tic-tac-toe.h
-	gcc $(options) -c -o tic-tac-toe.o tic-tac-toe.c
+build : bin/tic-tac-toe
 
-.PHONY : clean
-clean :
-	-rm tic-tac-toe main.o tic-tac-toe.o
+test : bin/test_tic-tac-toe
+	bin/test_tic-tac-toe
+
+bin/tic-tac-toe : obj/main.o obj/tic-tac-toe.o tic-tac-toe.h
+	gcc $(CFLAGS) -o $@ obj/main.o obj/tic-tac-toe.o
+
+bin/test_tic-tac-toe : obj/test_tic-tac-toe.o obj/tic-tac-toe.o tic-tac-toe.h
+	gcc $(CFLAGS) -o $@ obj/test_tic-tac-toe.o obj/tic-tac-toe.o
+
+obj/test_tic-tac-toe.o : test_tic-tac-toe.c tic-tac-toe.h
+	gcc $(CFLAGS) -c -o $@ test_tic-tac-toe.c
+
+obj/main.o : main.c tic-tac-toe.h
+	gcc $(CFLAGS) -c -o $@ main.c
+
+obj/tic-tac-toe.o : tic-tac-toe.c tic-tac-toe.h
+	gcc $(CFLAGS) -c -o $@ tic-tac-toe.c
+
+cleanall : cleanbin cleanobj
+
+cleanbin :
+	rm bin/*
+
+cleanobj :
+	rm obj/*

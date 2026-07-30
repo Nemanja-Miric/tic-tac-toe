@@ -4,7 +4,7 @@ CFLAGS = -std=c23 -Wall -Wextra -O3
 .SUFFIXES = .c .h .o
 .PHONY = all build test cleanall cleanbin cleanobj
 
-all : bin/tic-tac-toe bin/test_tic-tac-toe
+all : build test
 
 build : bin/tic-tac-toe
 

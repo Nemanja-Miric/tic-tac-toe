@@ -10,6 +10,7 @@
 
 void testall(void);
 void test_set_move(void);
+void test_is_invalid_move(void);
 
 int main(void)
 {
@@ -19,6 +20,7 @@ int main(void)
 void testall(void)
 {
     test_set_move();
+    test_is_invalid_move();
 }
 
 void test_set_move(void)
@@ -52,3 +54,55 @@ void test_set_move(void)
     set_move(board, '8');
     assert((board[1] & 0b11000000) == 0b10000000);
 }
+
+void test_is_invalid_move(void)
+{
+    /*
+    ** board
+    **
+    ** O| |X
+    ** -+-+-
+    **  | |O
+    ** -+-+-
+    ** O|X|O
+    */
+    const unsigned char board[3] = {0b00000010, 0b01101000, 0b00010010};
+    bool test;    
+    
+    // Test invalid position '0'
+    test = is_invalid_move(board, '0');
+    assert(test);
+
+    // Test valid position (case 1,5,9)
+    test = is_invalid_move(board, '5');
+    assert(!test);
+
+    // Test invalid position (case 1,5,9)
+    test = is_invalid_move(board, '9');
+    assert(test);
+
+    // Test valid position (case 2,6)
+    test = is_invalid_move(board, '2');
+    assert(!test);
+
+    // Test invalid position (case 2,6)
+    test = is_invalid_move(board, '6');
+    assert(test);
+
+    // Test valid position (case 3,7)
+    test = is_invalid_move(board, '3');
+    assert(!test);
+
+    // Test invalid position (case 3,7)
+    test = is_invalid_move(board, '7');
+    assert(test);
+
+    // Test valid position (case 4,8)
+    test = is_invalid_move(board, '4');
+    assert(!test);
+
+    // Test invalid position (case 4,8)
+    test = is_invalid_move(board, '8');
+    assert(test);
+}
+

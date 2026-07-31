@@ -11,6 +11,7 @@
 void testall(void);
 void test_set_move(void);
 void test_is_invalid_move(void);
+void test_update_GWD_flags(void);
 
 int main(void)
 {
@@ -21,6 +22,7 @@ void testall(void)
 {
     test_set_move();
     test_is_invalid_move();
+    test_update_GWD_flags();
 }
 
 void test_set_move(void)
@@ -106,3 +108,83 @@ void test_is_invalid_move(void)
     assert(test);
 }
 
+void test_update_GWD_flags(void)
+{
+    unsigned char board[3] = {};
+
+    // Test no win or draw
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011100) == 0b00000000);
+
+    // Test draw
+    /*
+    ** board
+    **
+    ** X|X|O
+    ** -+-+-
+    ** O|X|X
+    ** -+-+-
+    ** X|O|O
+    */
+    board[0] = 0b10100101;
+    board[1] = 0b10010101;
+    board[2] = 0b00000010;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00010100) == 0b00010100);
+
+    // Test X win 123
+    board[0] = 0b00010101;
+    board[1] = 0b00000000;
+    board[2] = 0b00000000;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00011000);
+
+    // Test O win 147
+    board[0] = 0b10000010;
+    board[1] = 0b00100000;
+    board[2] = 0b00000000;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00010000);
+
+    // Test X win 258
+    board[0] = 0b00000100;
+    board[1] = 0b01000001;
+    board[2] = 0b00000000;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00011000);
+
+    // Test O win 357
+    board[0] = 0b00100000;
+    board[1] = 0b00100010;
+    board[2] = 0b00000000;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00010000);
+
+    // Test X win 456
+    board[0] = 0b01000000;
+    board[1] = 0b00000101;
+    board[2] = 0b00000000;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00011000);
+
+    // Test O win 159
+    board[0] = 0b00000010;
+    board[1] = 0b00000010;
+    board[2] = 0b00000010;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00010000);
+
+    // Test X win 369
+    board[0] = 0b00010000;
+    board[1] = 0b00000100;
+    board[2] = 0b00000001;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00011000);
+
+    // Test O win 789
+    board[0] = 0b00000000;
+    board[1] = 0b10100000;
+    board[2] = 0b00000010;
+    update_GWD_flags(board);
+    assert((board[2] & 0b00011000) == 0b00010000);
+}

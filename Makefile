@@ -1,5 +1,5 @@
 SHELL = /bin/sh
-CFLAGS = -std=c23 -Wall -Wextra -O3
+CFLAGS = -std=c23 -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -Wformat=2 -O3
 
 .SUFFIXES = .c .h .o
 .PHONY = all build test cleanall cleanbin cleanobj

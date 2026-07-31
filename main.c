@@ -31,7 +31,11 @@ int main(int argc, char *argv[])
             goto help;
     } else {
 help:
-        display_help(argv[0]);
+        if (argv[0][0] == '\0')
+            display_help("<UNKNOWN>");
+        else
+            display_help(argv[0]);
+
         return EXIT_SUCCESS;
     }
 
@@ -43,7 +47,7 @@ help:
 
         if (IS_X != IS_O_TURN) {
             if (IS_COMPUTER) {      // Computer's turn
-                move = (best_move(board) >> 8);
+                move = (char)(best_move(board) >> 8);
                 (void)puts("Computer's turn");
                 (void)printf("%c%c\n\n", IS_X ? 'X' : 'O', move);
                 
@@ -53,7 +57,7 @@ help:
                     (void)puts("Guest's turn");
                     (void)putchar(IS_X ? 'X' : 'O');
                     (void)fflush(stdout);
-                    move = getchar();
+                    move = (char)getchar();
                     while (getchar() != '\n');
                     
                     if (is_invalid_move(board, move)) {
@@ -72,7 +76,7 @@ help:
                 (void)puts("Host's turn");
                 (void)putchar(IS_X ? 'O' : 'X');
                 (void)fflush(stdout);
-                move = getchar();
+                move = (char)getchar();
                 while (getchar() != '\n');
 
                 if (is_invalid_move(board, move)) {

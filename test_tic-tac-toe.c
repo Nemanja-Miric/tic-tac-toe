@@ -12,6 +12,7 @@ void testall(void);
 void test_set_move(void);
 void test_is_invalid_move(void);
 void test_update_GWD_flags(void);
+void test_macros(void);
 
 int main(void)
 {
@@ -23,6 +24,7 @@ void testall(void)
     test_set_move();
     test_is_invalid_move();
     test_update_GWD_flags();
+    test_macros();
 }
 
 void test_set_move(void)
@@ -187,4 +189,33 @@ void test_update_GWD_flags(void)
     board[2] = 0b00000010;
     update_GWD_flags(board);
     assert((board[2] & 0b00011000) == 0b00010000);
+}
+
+void test_macros(void)
+{
+    unsigned char board[3] = {0b00000000, 0b00000000, 0b01010100};
+    unsigned char board_cpy[3] = {0b00000000, 0b00000000, 0b10101000};
+
+    // Test IS_DRAW(_CPY)
+    assert(IS_DRAW == (bool)(board[2] & 0b00000100));
+    assert(IS_DRAW_CPY == (bool)(board_cpy[2] & 0b00000100));
+
+    // Test IS_X_WINNER(_CPY)
+    assert(IS_X_WINNER == (bool)(board[2] & 0b00001000));
+    assert(IS_X_WINNER_CPY == (bool)(board_cpy[2] & 0b00001000));
+
+    // Test IS_GAME_OVER(_CPY)
+    assert(IS_GAME_OVER == (bool)(board[2] & 0b00010000));
+    assert(IS_GAME_OVER_CPY == (bool)(board_cpy[2] & 0b00010000));
+
+    // Test IS_O_TURN(_CPY)
+    assert(IS_O_TURN == (bool)(board[2] & 0b00100000));
+    assert(IS_O_TURN_CPY == (bool)(board_cpy[2] & 0b00100000));
+
+    // Test IS_X(_CPY)
+    assert(IS_X == (bool)(board[2] & 0b01000000));
+    assert(IS_X_CPY == (bool)(board_cpy[2] & 0b01000000));
+
+    // Test IS_COMPUTER
+    assert(IS_COMPUTER == (bool)(board[2] & 0b10000000));
 }

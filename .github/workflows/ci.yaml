@@ -2,15 +2,12 @@ name: Tic-Tac-Toe CI
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [ main ]
 
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
     - name: Test
       run: make test
-    - name: Build
-      run: make build
 

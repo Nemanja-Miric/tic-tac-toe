@@ -1,8 +1,8 @@
 SHELL = /bin/sh
-CFLAGS = -std=c2x -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -Wformat=2 -Wstrict-prototypes -Wold-style-definition -O3
+CFLAGS = -std=c2x -pedantic-errors -Wall -Wextra -Wconversion -Wsign-conversion -Wformat=2 -Wstrict-prototypes -Wold-style-definition -Wshadow -Wundef -Wwrite-strings -O3
 
 .SUFFIXES = .c .h .o
-.PHONY = all build test bin obj cleanall cleanbin cleanobj
+.PHONY = all build test bin obj clean cleanbin cleanobj
 
 all : build test
 
@@ -32,10 +32,10 @@ bin :
 obj :
 	mkdir obj
 
-cleanall : cleanbin cleanobj
+clean : cleanbin cleanobj
 
 cleanbin :
-	rm bin/*
+	rm -r bin
 
 cleanobj :
-	rm obj/*
+	rm -r obj

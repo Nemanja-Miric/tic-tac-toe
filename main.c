@@ -18,15 +18,16 @@ int main(int argc, char *argv[])
     ** CXOGWD--
     */
     unsigned char board[3] = {}; // Set O, G, and D Flags
+    char move;
 
     if (argc == 3) {
         if (strcmp(argv[1], "-c") == 0 || strcmp(argv[1], "--computer") == 0)
-            board[2] |= 0x80; // Set C Flag
+            board[2] |= 0b10000000; // Set C Flag
         else if (strcmp(argv[1], "-p") != 0 && strcmp(argv[1], "--player") != 0)
             goto help;
 
         if (strcmp(argv[2], "X") == 0 || strcmp(argv[2], "x") == 0)
-            board[2] |= 0x40; // Set X Flag
+            board[2] |= 0b01000000; // Set X Flag
         else if (strcmp(argv[2], "O") != 0 && strcmp(argv[2], "o") != 0)
             goto help;
     } else {
@@ -38,8 +39,6 @@ help:
 
         return EXIT_SUCCESS;
     }
-
-    char move;
 
     while (!IS_GAME_OVER) {
         display_board(board);
@@ -91,7 +90,7 @@ help:
             set_move(board, move);
         }
         
-        board[2] ^= 0x20; // Flip O Flag
+        board[2] ^= 0b00100000; // Flip O Flag
 
         update_GWD_flags(board);
     }
